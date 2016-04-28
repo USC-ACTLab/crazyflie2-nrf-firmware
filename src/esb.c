@@ -31,6 +31,8 @@
 
 #include <nrf.h>
 
+#include "SEGGER_RTT.h"
+
 #ifdef BLE
 #include <ble_gap.h>
 #include <nrf_soc.h>
@@ -237,11 +239,13 @@ void esbInterruptHandler()
         } else {
           setupTx(true);
         }
+        // SEGGER_RTT_WriteString(0, "ra\n");
       } else
       {
         // broadcast => no ack
         NRF_RADIO->PACKETPTR = (uint32_t)&rxPackets[rxq_head];
         NRF_RADIO->TASKS_START = 1UL;
+        // SEGGER_RTT_printf(0, "rna: %d\n", pk->data[0]);
       }
 
 

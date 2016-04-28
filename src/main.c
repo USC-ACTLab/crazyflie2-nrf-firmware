@@ -43,6 +43,8 @@
 #include "memory.h"
 #include "ownet.h"
 
+#include "SEGGER_RTT.h"
+
 #ifdef BLE
 #include "ble_crazyflies.h"
 #endif
@@ -74,6 +76,7 @@ static void handleBootloaderCmd(struct esbPacket_s *packet);
 
 int main()
 {
+  SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
   systickInit();
   memoryInit();
 
@@ -122,6 +125,8 @@ int main()
   esbSetDatarate(DEFAULT_RADIO_RATE);
   esbSetChannel(DEFAULT_RADIO_CHANNEL);
 #endif
+
+  SEGGER_RTT_WriteString(0, "Started\n");
 
   mainloop();
 

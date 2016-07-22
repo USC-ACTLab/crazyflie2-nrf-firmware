@@ -394,7 +394,10 @@ static void handleRadioCmd(struct esbPacket_s *packet)
 }
 
 #define BOOTLOADER_CMD_RESET_INIT 0xFF
-#define BOOTLOADER_CMD_RESET 0xF0
+#define BOOTLOADER_CMD_RESET      0xF0
+#define BOOTLOADER_CMD_ALLOFF     0x01
+#define BOOTLOADER_CMD_SYSOFF     0x02
+#define BOOTLOADER_CMD_SYSON      0x03
 
 static void handleBootloaderCmd(struct esbPacket_s *packet)
 {
@@ -438,6 +441,16 @@ static void handleBootloaderCmd(struct esbPacket_s *packet)
         NVIC_SystemReset();
 #endif
       }
+      break;
+    case BOOTLOADER_CMD_ALLOFF:
+      pmSetState(pmAllOff);
+      break;
+    case BOOTLOADER_CMD_SYSOFF:
+      pmSetState(pmSysOff);
+      break;
+    case BOOTLOADER_CMD_SYSON:
+      pmSysBootloader(false);
+      pmSetState(pmSysRunning);
       break;
     default:
       break;
